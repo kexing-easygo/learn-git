@@ -3,14 +3,18 @@ import { View, Text, Button } from '@tarojs/components'
 import './index.less'
 import Square from '../square'
 
-let playing = true;
-export default function Board(){
+
+export default function Board(props){
+
   const title = "Next Player: ";
-  let player = playing? "X":"O";
+  const {state} = props;
+  const player = state? "X":"O";
 
     return (
-      <View className="board-row">
-        {title}{player}
+      
+      <View>
+        <text className="board">{title}{player}</text>
+        <View className="board-row">
         <View>
           <Square text={player}/>
           <Square text={player}/>
@@ -26,6 +30,9 @@ export default function Board(){
           <Square text={player}/>
           <Square text={player}/>
         </View>
+        </View>
+        
       </View>
+      
     );
 }
