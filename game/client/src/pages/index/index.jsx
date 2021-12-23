@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, Button } from '@tarojs/components'
+import React from 'react'
+import { View } from '@tarojs/components'
 import './index.less'
-import Game from '../../components/game'
+import Board from '../../components/board'
 
 export default function Index() {
   return (
       <View className='index'>
-        <Game />
+        <Board />
       </View>
     )
-  
 }
