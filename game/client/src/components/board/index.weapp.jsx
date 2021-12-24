@@ -10,10 +10,12 @@ const squares = [
   null,null,null,
   null,null,null,
 ]
-
 // 记录棋盘历史状态
 const history = []
+// 检测是否按了历史的按钮
 let back = false;
+// 用于清除历史记录
+let cleanHistoryState = -2;
 
 /*
 整个棋盘
@@ -28,22 +30,29 @@ export default function Board(){
     getHistoryState(state);
   }
   
-  // 回调棋盘状态
+  // 回调历史回合状态
   const callBackState = () =>{
    if (historyState != -2) {
     back = true;
     if (historyState == -1) {
+      changePlayer("X");
       for (let i = 0; i < squares.length; i++) {
         squares[i] = null;
       }
      } else {
+      historyState % 2 == 0 ? 
+      changePlayer("O"):changePlayer("X");
       for (let i = 0; i < squares.length; i++) {
         squares[i] = history[historyState][i];
       }
      }
-     console.log(back);
-     console.log(squares);
+     cleanHistoryState = historyState+2;
+    }
   }
+
+  // 获得是否真的悔棋
+  const getClean = (clean) =>{
+    cleanHistory(clean);
   }
 
   /*
@@ -95,6 +104,24 @@ export default function Board(){
     return;
   }
 
+  /*
+  清除历史棋盘状态
+  */
+ function cleanHistory (cleanTrue) {
+   if (cleanTrue) {
+    console.log(1,history);
+    if (cleanHistoryState == -1) {
+      history.splice(0, history.length);
+      console.log(2,history);
+    } else if (cleanHistoryState > -1) {
+      history.splice(cleanHistoryState, history.length);
+      console.log(3,history);
+    }
+    cleanHistoryState = -2;
+   }
+   console.log(4,history);
+ }
+
   // 更新游戏标题 检查赢家
   useEffect(() =>{
     if (checkWinner() == "No") {
@@ -102,7 +129,6 @@ export default function Board(){
     }
     callBackState();
     getHistoryState(-2);
-    console.log("effect",back);
   })
 
     return (
@@ -111,27 +137,36 @@ export default function Board(){
         <View className="board-row">
           <View>
             <Square text={() =>{return continueGame(0)}} 
-            backText={squares[0]} back={back} />
+            backText={squares[0]} back={back} clean={getClean}
+             />
             <Square text={() =>{return continueGame(1)}} 
-            backText={squares[1]} back={back} />
+            backText={squares[1]} back={back} clean={getClean}
+             />
             <Square text={() =>{return continueGame(2)}} 
-            backText={squares[2]} back={back} />
+            backText={squares[2]} back={back} clean={getClean}
+             />
           </View>
           <View>
             <Square text={() =>{return continueGame(3)}}
-            backText={squares[3]} back={back} />
+            backText={squares[3]} back={back} clean={getClean}
+             />
             <Square text={() =>{return continueGame(4)}}
-            backText={squares[4]} back={back} />
+            backText={squares[4]} back={back} clean={getClean}
+             />
             <Square text={() =>{return continueGame(5)}}
-            backText={squares[5]} back={back} />
+            backText={squares[5]} back={back} clean={getClean}
+             />
           </View>
           <View>
             <Square text={() =>{return continueGame(6)}}
-            backText={squares[6]} back={back} />
+            backText={squares[6]} back={back} clean={getClean}
+             />
             <Square text={() =>{return continueGame(7)}}
-            backText={squares[7]} back={back} />
+            backText={squares[7]} back={back} clean={getClean}
+             />
             <Square text={() =>{return continueGame(8)}}
-            backText={squares[8]} back={back} />
+            backText={squares[8]} back={back} clean={getClean}
+             />
           </View>
         </View>
         <History history={history.slice()} getState={getHistory}/>
