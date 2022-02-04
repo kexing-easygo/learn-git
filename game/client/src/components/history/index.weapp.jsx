@@ -1,35 +1,36 @@
-import React, { useEffect } from 'react'
-import { Block, Button, View,Text } from '@tarojs/components'
+import React from 'react'
+import { Button, View,Text } from '@tarojs/components'
 import './index.less'
 
 /*
-游戏回合记录
+历史回合button
 */
 export default function History(props) {
-  const {history, getState} = props;
+  const {history, getState, winner} = props;
 
   // 根据回合添加序号和按钮
-  const moves = history.map((move,step) => {
-    const historyNumber = step;
-    step++;
-    const text = "Go to move #" + step;
-    step++;
+  const moves = history.map((move, step) => {
+    if (step != 0 ) {
+      const text = "Go to move #" + step;
+      
+      return (
+        <View className='lines'>
+          <Text className="line">{step+1}.</Text>
+          <Button className="buttons" onClick={()=>{getState(step);winner(false)}}>
+            <Text className="text">{text}</Text>
+          </Button>
+        </View>
+  )}});
 
-    return (
-      <Block>
-        <Text className="line">{step}.</Text>
-        <Button className="buttons" onClick={()=>{getState(historyNumber)}}><Text className="text">{text}</Text></Button>
-      </Block>
-  )});
 
   return (
     <View>
-      <Block>
+      <View className='lines'>
         <Text className="firstLine" >1.</Text>
-        <Button className="buttons" onClick={()=>{getState(-1)}}>
-        <Text className="text">Go to game start</Text>
+        <Button className="buttons" onClick={()=>{getState(0);winner(false)}}>
+          <Text className="text">Go to game start</Text>
         </Button>
-      </Block>
+      </View>
       {moves}
     </View>
   );
